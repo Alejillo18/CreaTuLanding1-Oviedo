@@ -1,10 +1,13 @@
+
 import { useState, useEffect } from "react";
-import NavBar from "./NavBar";
-import Header from "./Header";
-import MainBody from "./MainBody";
-import Footer from "./Footer";
-import Button from "./Button";
-import CartWidget from "./CartWidget";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./layout/Layout";
+import NavBar from "./layout/NavBar";
+import Button from "./common/Button";
+import CartWidget from "./common/CartWidget";
+import ItemListContainer from "./items/ItemListContainer";
+import ItemDetailContainer from "./items/ItemDetailContainer";
+
 function App() {
   const [showNavBar, setShowNavBar] = useState(false);
   const [opened, setOpened] = useState(false);
@@ -12,22 +15,29 @@ function App() {
   useEffect(() => {
     document.body.classList.toggle("nav-visible", showNavBar);
   }, [showNavBar]);
+
   return (
-    <>
-      <div className={`main-content ${showNavBar ? "blurred" : ""}`}>
-        <Header />
-        <MainBody />
-        <Footer />
+    <BrowserRouter>
+      <div className="app-container">
+        <Button
+          opened={opened}
+          setOpened={setOpened}
+          setShowNavBar={setShowNavBar}
+          showNavBar={showNavBar}
+        />
+        <NavBar esVisible={showNavBar} />
+        <CartWidget />
+        
+        <Layout showNavBar={showNavBar}>
+          <Routes>
+            <Route path="/" element={<ItemListContainer />} />
+            <Route path="/category/:id" element={<ItemListContainer />} />
+            <Route path="/item/:id" element={<ItemDetailContainer />} />
+            <Route path="*" element={<h2>404 - Página no encontrada</h2>} />
+          </Routes>
+        </Layout>
       </div>
-      <CartWidget></CartWidget>
-      <Button
-        opened={opened}
-        setOpened={setOpened}
-        setShowNavBar={setShowNavBar}
-        showNavBar={showNavBar}
-      ></Button>
-      <NavBar esVisible={showNavBar}></NavBar>
-    </>
+    </BrowserRouter>
   );
 }
 
