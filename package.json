@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/Alejillo18/CreaTuLanding1-Oviedo",
+  "homepage": "https://alejillo18.github.io/CreaTuLanding1-Oviedo",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

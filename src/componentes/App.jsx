@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
 import Layout from "./layout/Layout";
 import NavBar from "./layout/NavBar";
 import Button from "./common/Button";
@@ -17,7 +17,7 @@ function App() {
   }, [showNavBar]);
 
   return (
-    <BrowserRouter>
+    <HashRouter> {/* Realizo este cambio debido al funcionamiento y despliegue en github pages, el cual BrowserRoutes tiene problemas */}
       <div className="app-container">
         <Button
           opened={opened}
@@ -37,7 +37,7 @@ function App() {
           </Routes>
         </Layout>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
