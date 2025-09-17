@@ -1,33 +1,40 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ItemDetail from "./ItemDetail";
-import { getProductById } from "../../data/products";
+import { getFirestore,doc, getDoc } from "firebase/firestore";
+import { app } from "../../data/firebase"; 
+import { toast } from "react-hot-toast";
 
 function ItemDetailContainer() {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setCargando(true);
-    setError(null);
+     async function getProductID(){
+      toast.dismiss()
+      toast.loading("Cargando producto")
+      try{
+        const db = getFirestore (app)
+        const consulta = doc(db,   "products", id)
+        const productoIDCrudo = await getDoc(consulta)
+        if(productoIDCrudo.exists()){
+          const productoID = productoIDCrudo.data()
+        setProducto(productoID)
+        toast.dismiss()
+        toast.success("Datos cargados correctamente")
+        }
+        else{
+          toast.dismiss()
+          toast.error("Producto no encontrado, intente nuevamente")
+        } 
+      }
+    catch{
+      toast.dismiss()
+      toast.error("Error al Cargar los datos, Intente nuevamente")}
+    }
     
-    getProductById(id)
-      .then((res) => {
-        setProducto(res);
-        setCargando(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setError("Error al cargar el producto. Intenta nuevamente.");
-        setCargando(false);
-      });
-  }, [id]);
-
-  if (cargando) return <div className="loading">Cargando producto...</div>;
-  if (error) return <div className="error">{error}</div>;
-  if (!producto) return <div className="not-found">Producto no encontrado</div>;
+    getProductID()
+     }  ,[])
 
   return <ItemDetail producto={producto} />;
 }

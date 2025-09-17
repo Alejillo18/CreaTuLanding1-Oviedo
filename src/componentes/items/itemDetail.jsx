@@ -1,7 +1,20 @@
+import toast from "react-hot-toast";
 import ItemCount from "../common/ItemCount";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 
 function ItemDetail({ producto }) {
+  const {armarCarrito} = useContext(CartContext)
+
+function agregarCarrito(quantity  ){
+  armarCarrito(producto,quantity)
+}
+
+if(!producto){
+  toast.loading("Cargando producto")
+}
+else{
   return (
     <div className="item-detail">
       <Link to="/" className="back-link">← Volver al listado</Link>
@@ -30,11 +43,13 @@ function ItemDetail({ producto }) {
           <div className="stock-info">
             <p>Stock disponible: {producto.stock} unidades</p>
           </div>
-          <ItemCount initial={1} stock={producto.stock} />
+          <ItemCount initial={1} stock={producto.stock} agregarCarrito={agregarCarrito}/>
         </div>
       </div>
     </div>
   );
+}
+  
 }
 
 export default ItemDetail;
