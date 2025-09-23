@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ItemDetail from "./ItemDetail";
+import ItemDetail from "./itemDetail";
 import { getFirestore,doc, getDoc } from "firebase/firestore";
 import { app } from "../../data/firebase"; 
 import { toast } from "react-hot-toast";
